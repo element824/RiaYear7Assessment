@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 7 Maths Practice – Indices &amp; Integers</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --bg: #f5f7fa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #34495e);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 6px; }
+        .header .subtitle { opacity: 0.85; font-size: 0.95em; }
+        .header .school-name { font-size: 0.85em; opacity: 0.7; margin-top: 8px; }
+
+        /* Info card */
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .info-card h2 {
+            font-size: 1.1em;
+            color: var(--accent);
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 6px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 20px;
+        }
+        .info-grid dt { font-weight: 600; font-size: 0.85em; color: #7f8c8d; }
+        .info-grid dd { font-size: 0.95em; margin-bottom: 4px; }
+
+        .outcomes { font-size: 0.9em; }
+        .outcomes li { margin-bottom: 6px; }
+        .outcomes code { background: var(--light); padding: 1px 6px; border-radius: 4px; font-size: 0.85em; }
+
+        /* Timer */
+        .timer-bar {
+            background: white;
+            border-radius: 10px;
+            padding: 16px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .timer-display {
+            font-size: 2em;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+        .timer-display.warning { color: var(--warning); }
+        .timer-display.danger { color: var(--danger); animation: pulse 1s infinite; }
+        @keyframes pulse { 50% { opacity: 0.5; } }
+        .timer-buttons button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .btn-start { background: var(--success); color: white; }
+        .btn-pause { background: var(--warning); color: white; }
+        .btn-reset { background: var(--light); color: var(--primary); }
+
+        /* Section tabs */
+        .tab-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid var(--light);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover { border-color: var(--accent); }
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        .tab-btn .tab-time { font-size: 0.8em; font-weight: 400; opacity: 0.8; display: block; }
+
+        /* Exam section */
+        .exam-section { display: none; }
+        .exam-section.active { display: block; }
+
+        /* Question card */
+        .question-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border-left: 4px solid var(--accent);
+            transition: border-color 0.3s;
+        }
+        .question-card.correct { border-left-color: var(--success); background: #f0faf4; }
+        .question-card.incorrect { border-left-color: var(--danger); background: #fdf0ef; }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .q-number {
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        .q-marks {
+            font-size: 0.8em;
+            background: var(--light);
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+        .q-topic {
+            font-size: 0.75em;
+            background: #dfe6e9;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #636e72;
+        }
+        .q-text { font-size: 1.05em; margin-bottom: 14px; }
+        .q-text .math { font-family: 'Cambria Math', 'Times New Roman', serif; font-style: italic; }
+
+        /* Input styles */
+        .answer-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .answer-input {
+            padding: 10px 14px;
+            border: 2px solid #dcdde1;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 200px;
+            transition: border-color 0.2s;
+        }
+        .answer-input:focus { outline: none; border-color: var(--accent); }
+        .answer-input.correct-input { border-color: var(--success); background: #f0faf4; }
+        .answer-input.incorrect-input { border-color: var(--danger); background: #fdf0ef; }
+
+        .check-btn {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        .check-btn:hover { background: #2980b9; }
+
+        .feedback {
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct-fb { background: #d4edda; color: #155724; }
+        .feedback.incorrect-fb { background: #f8d7da; color: #721c24; }
+
+        /* MCQ */
+        .mcq-options { list-style: none; }
+        .mcq-options li {
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border: 2px solid #dcdde1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mcq-options li:hover { border-color: var(--accent); background: #eaf2f8; }
+        .mcq-options li.selected { border-color: var(--accent); background: #d6eaf8; }
+        .mcq-options li.correct-opt { border-color: var(--success); background: #d4edda; }
+        .mcq-options li.incorrect-opt { border-color: var(--danger); background: #f8d7da; }
+
+        /* Working area */
+        .working-area {
+            margin-top: 10px;
+        }
+        .working-toggle {
+            font-size: 0.85em;
+            color: var(--accent);
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 600;
+        }
+        .working-box {
+            display: none;
+            margin-top: 8px;
+        }
+        .working-box.show { display: block; }
+        .working-box textarea {
+            width: 100%;
+            min-height: 80px;
+            border: 2px solid #dcdde1;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            resize: vertical;
+        }
+
+        /* Score summary */
+        .score-summary {
+            background: linear-gradient(135deg, var(--primary), #34495e);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+            text-align: center;
+            display: none;
+        }
+        .score-summary.show { display: block; }
+        .score-big { font-size: 3em; font-weight: 700; }
+        .score-label { font-size: 1.1em; opacity: 0.85; }
+        .score-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin: 16px auto;
+            max-width: 400px;
+        }
+        .score-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+
+        /* Submit all */
+        .submit-all {
+            padding: 14px 40px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+        .submit-all:hover { background: #219a52; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .timer-bar { flex-direction: column; text-align: center; }
+            .answer-input { width: 100%; }
+        }
+
+        /* Topic separator */
+        .topic-divider {
+            text-align: center;
+            margin: 28px 0 16px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--primary);
+            position: relative;
+        }
+        .topic-divider::before, .topic-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 2px;
+            background: var(--light);
+        }
+        .topic-divider::before { left: 0; }
+        .topic-divider::after { right: 0; }
+
+        sup { font-size: 0.7em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="school-name">Bankstown Girls High School — Assessment Task Notification</div>
+        <h1>Year 7 Mathematics — Task 1</h1>
+        <div class="subtitle">Indices &amp; Computations with Positive and Negative Integers</div>
+    </div>
+
+    <!-- Task Info -->
+    <div class="info-card">
+        <h2>📋 Task Information</h2>
+        <div class="info-grid">
+            <dt>Class</dt><dd>7O, 7L, 7C, 7A, 7N, 7K</dd>
+            <dt>Nature of Task</dt><dd>In-class Examinations</dd>
+            <dt>Main Exam</dt><dd>35 minutes</dd>
+            <dt>Common Exam</dt><dd>~20 minutes</dd>
+        </div>
+    </div>
+
+    <!-- Outcomes -->
+    <div class="info-card">
+        <h2>🎯 Outcomes Assessed</h2>
+        <ul class="outcomes">
+            <li><code>MA4-IND-C-01</code> Operates with primes and roots, positive-integer and zero indices involving numerical bases and establishes the relevant index laws</li>
+            <li><code>MA4-INT-C-01</code> Compares, orders and calculates with integers to solve problems</li>
+            <li><code>MAO-WM-01</code> Develops understanding and fluency in mathematics through exploring and connecting mathematical concepts</li>
+        </ul>
+    </div>
+
+    <!-- Instructions -->
+    <div class="info-card">
+        <h2>📝 Instructions</h2>
+        <ul style="margin-left: 18px; font-size: 0.95em;">
+            <li>Write using a black pen</li>
+            <li>Show all necessary working in every question</li>
+            <li>Calculators are allowed for the Common Examination only</li>
+        </ul>
+    </div>
+
+    <!-- Timer -->
+    <div class="timer-bar" id="timerBar">
+        <div>
+            <span style="font-size:0.85em;font-weight:600;" id="timerLabel">Main Examination</span>
+            <div class="timer-display" id="timerDisplay">35:00</div>
+        </div>
+        <div class="timer-buttons">
+            <button class="btn-start" id="btnStart" onclick="startTimer()">▶ Start</button>
+            <button class="btn-pause" id="btnPause" onclick="pauseTimer()" style="display:none;">⏸ Pause</button>
+            <button class="btn-reset" onclick="resetTimer()">↺ Reset</button>
+        </div>
+    </div>
+
+    <!-- Section Tabs -->
+    <div class="tab-container">
+        <div class="tab-btn active" onclick="switchSection('main')" id="tabMain">
+            Part 1: Main Examination
+            <span class="tab-time">35 minutes • No Calculator</span>
+        </div>
+        <div class="tab-btn" onclick="switchSection('common')" id="tabCommon">
+            Part 2: Common Examination
+            <span class="tab-time">~20 minutes • Calculator Allowed</span>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN EXAMINATION ==================== -->
+    <div class="exam-section active" id="sectionMain">
+
+        <div class="topic-divider">📐 Section A — Indices</div>
+
+        <!-- Q1 -->
+        <div class="question-card" id="q1">
+            <div class="q-header">
+                <span class="q-number">Question 1</span>
+                <span class="q-topic">Index Notation</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Write 5 × 5 × 5 × 5 in index notation.</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a1" placeholder="e.g. 5^4">
+                <button class="check-btn" onclick="checkAnswer('q1','a1','5^4',['5⁴'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q1"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w1')">📝 Show working space</button>
+                <div class="working-box" id="w1"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card" id="q2">
+            <div class="q-header">
+                <span class="q-number">Question 2</span>
+                <span class="q-topic">Index Notation</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Write 3 × 3 × 3 × 3 × 3 in index notation.</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a2" placeholder="e.g. 3^5">
+                <button class="check-btn" onclick="checkAnswer('q2','a2','3^5',['3⁵'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q2"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card" id="q3">
+            <div class="q-header">
+                <span class="q-number">Question 3</span>
+                <span class="q-topic">Evaluating Indices</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Evaluate: 2<sup>5</sup></div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a3" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q3','a3','32')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q3"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w3')">📝 Show working space</button>
+                <div class="working-box" id="w3"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question-card" id="q4">
+            <div class="q-header">
+                <span class="q-number">Question 4</span>
+                <span class="q-topic">Evaluating Indices</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Evaluate: 10<sup>3</sup></div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a4" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q4','a4','1000')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q4"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="question-card" id="q5">
+            <div class="q-header">
+                <span class="q-number">Question 5</span>
+                <span class="q-topic">Zero Index</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">What is the value of 7<sup>0</sup>?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a5" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q5','a5','1')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q5"></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="question-card" id="q6">
+            <div class="q-header">
+                <span class="q-number">Question 6</span>
+                <span class="q-topic">Zero Index</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Evaluate: 125<sup>0</sup> + 4<sup>0</sup></div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a6" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q6','a6','2')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q6"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w6')">📝 Show working space</button>
+                <div class="working-box" id="w6"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="question-card" id="q7">
+            <div class="q-header">
+                <span class="q-number">Question 7</span>
+                <span class="q-topic">Index Laws – Multiplication</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">Simplify using index laws: 3<sup>4</sup> × 3<sup>2</sup></div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a7" placeholder="e.g. 3^6">
+                <button class="check-btn" onclick="checkAnswer('q7','a7','3^6',['3⁶','729'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q7"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w7')">📝 Show working space</button>
+                <div class="working-box" id="w7"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="question-card" id="q8">
+            <div class="q-header">
+                <span class="q-number">Question 8</span>
+                <span class="q-topic">Index Laws – Division</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">Simplify using index laws: 5<sup>7</sup> ÷ 5<sup>3</sup></div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a8" placeholder="e.g. 5^4">
+                <button class="check-btn" onclick="checkAnswer('q8','a8','5^4',['5⁴','625'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q8"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w8')">📝 Show working space</button>
+                <div class="working-box" id="w8"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="question-card" id="q9">
+            <div class="q-header">
+                <span class="q-number">Question 9</span>
+                <span class="q-topic">Index Laws – Power of Power</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">Simplify: (2<sup>3</sup>)<sup>4</sup></div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a9" placeholder="e.g. 2^12">
+                <button class="check-btn" onclick="checkAnswer('q9','a9','2^12',['2¹²','4096'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q9"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w9')">📝 Show working space</button>
+                <div class="working-box" id="w9"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="question-card" id="q10">
+            <div class="q-header">
+                <span class="q-number">Question 10</span>
+                <span class="q-topic">Prime Factorisation</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">Express 36 as a product of its prime factors in index form.</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a10" placeholder="e.g. 2^2 x 3^2">
+                <button class="check-btn" onclick="checkAnswer('q10','a10','2^2 x 3^2',['2² × 3²','2^2 × 3^2','2^2 * 3^2','2^2x3^2','2²x3²','2² x 3²'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q10"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w10')">📝 Show working space</button>
+                <div class="working-box" id="w10"><textarea placeholder="Draw your factor tree here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="question-card" id="q11">
+            <div class="q-header">
+                <span class="q-number">Question 11</span>
+                <span class="q-topic">Prime Factorisation</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">Express 72 as a product of its prime factors in index form.</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a11" placeholder="e.g. 2^3 x 3^2">
+                <button class="check-btn" onclick="checkAnswer('q11','a11','2^3 x 3^2',['2³ × 3²','2^3 × 3^2','2^3 * 3^2','2^3x3^2','2³x3²','2³ x 3²'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q11"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w11')">📝 Show working space</button>
+                <div class="working-box" id="w11"><textarea placeholder="Draw your factor tree here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="question-card" id="q12">
+            <div class="q-header">
+                <span class="q-number">Question 12</span>
+                <span class="q-topic">Square Roots</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Evaluate: √144</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a12" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q12','a12','12')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q12"></div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="question-card" id="q13">
+            <div class="q-header">
+                <span class="q-number">Question 13</span>
+                <span class="q-topic">Cube Roots</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Evaluate: ∛27</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a13" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q13','a13','3')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q13"></div>
+        </div>
+
+        <div class="topic-divider">➕➖ Section B — Integers (Positive &amp; Negative)</div>
+
+        <!-- Q14 -->
+        <div class="question-card" id="q14">
+            <div class="q-header">
+                <span class="q-number">Question 14</span>
+                <span class="q-topic">Ordering Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Arrange these integers from smallest to largest: 3, −7, 0, −2, 5, −10</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a14" placeholder="e.g. -10, -7, -2, 0, 3, 5" style="width:320px;">
+                <button class="check-btn" onclick="checkAnswer('q14','a14','-10, -7, -2, 0, 3, 5',['-10,-7,-2,0,3,5','-10 -7 -2 0 3 5'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q14"></div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="question-card" id="q15">
+            <div class="q-header">
+                <span class="q-number">Question 15</span>
+                <span class="q-topic">Adding Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: (−8) + 5</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a15" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q15','a15','-3')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q15"></div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="question-card" id="q16">
+            <div class="q-header">
+                <span class="q-number">Question 16</span>
+                <span class="q-topic">Adding Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: (−12) + (−7)</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a16" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q16','a16','-19')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q16"></div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="question-card" id="q17">
+            <div class="q-header">
+                <span class="q-number">Question 17</span>
+                <span class="q-topic">Subtracting Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: 6 − (−4)</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a17" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q17','a17','10')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q17"></div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="question-card" id="q18">
+            <div class="q-header">
+                <span class="q-number">Question 18</span>
+                <span class="q-topic">Subtracting Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: (−3) − (−9)</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a18" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q18','a18','6')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q18"></div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="question-card" id="q19">
+            <div class="q-header">
+                <span class="q-number">Question 19</span>
+                <span class="q-topic">Multiplying Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: (−6) × 7</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a19" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q19','a19','-42')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q19"></div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="question-card" id="q20">
+            <div class="q-header">
+                <span class="q-number">Question 20</span>
+                <span class="q-topic">Multiplying Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: (−8) × (−5)</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a20" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q20','a20','40')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q20"></div>
+        </div>
+
+        <!-- Q21 -->
+        <div class="question-card" id="q21">
+            <div class="q-header">
+                <span class="q-number">Question 21</span>
+                <span class="q-topic">Dividing Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: (−36) ÷ 4</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a21" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q21','a21','-9')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q21"></div>
+        </div>
+
+        <!-- Q22 -->
+        <div class="question-card" id="q22">
+            <div class="q-header">
+                <span class="q-number">Question 22</span>
+                <span class="q-topic">Dividing Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Calculate: (−56) ÷ (−8)</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a22" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q22','a22','7')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q22"></div>
+        </div>
+
+        <!-- Q23 -->
+        <div class="question-card" id="q23">
+            <div class="q-header">
+                <span class="q-number">Question 23</span>
+                <span class="q-topic">Mixed Operations</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">Calculate: (−4) × 3 + (−2) × (−5)</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a23" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q23','a23','-2')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q23"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w23')">📝 Show working space</button>
+                <div class="working-box" id="w23"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q24 -->
+        <div class="question-card" id="q24">
+            <div class="q-header">
+                <span class="q-number">Question 24</span>
+                <span class="q-topic">Mixed Operations</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">The temperature in a city was −5°C in the morning. By noon, it had risen by 12°C. By midnight, it had dropped by 8°C from the noon temperature. What was the temperature at midnight?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a24" placeholder="e.g. -1">
+                <button class="check-btn" onclick="checkAnswer('q24','a24','-1',['−1','-1°C','-1 degrees'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-q24"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w24')">📝 Show working space</button>
+                <div class="working-box" id="w24"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- Q25 -->
+        <div class="question-card" id="q25">
+            <div class="q-header">
+                <span class="q-number">Question 25</span>
+                <span class="q-topic">Combined – Indices &amp; Integers</span>
+                <span class="q-marks">3 marks</span>
+            </div>
+            <div class="q-text">Evaluate: (−2)<sup>3</sup> + 4<sup>2</sup> − 3<sup>0</sup></div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="a25" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('q25','a25','7')">Check</button>
+            </div>
+            <div class="feedback" id="fb-q25"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('w25')">📝 Show working space</button>
+                <div class="working-box" id="w25"><textarea placeholder="Show your working step by step..."></textarea></div>
+            </div>
+        </div>
+
+        <button class="submit-all" onclick="submitAll('main')">✅ Submit Main Examination</button>
+        <div class="score-summary" id="scoreMain">
+            <div class="score-label">Main Examination Score</div>
+            <div class="score-big" id="scoreMainVal">0/25</div>
+            <div class="score-bar"><div class="score-fill" id="scoreMainBar" style="width:0%"></div></div>
+        </div>
+    </div>
+
+    <!-- ==================== COMMON EXAMINATION ==================== -->
+    <div class="exam-section" id="sectionCommon">
+
+        <div class="topic-divider">🧮 Common Examination — Numeracy (Calculator Allowed)</div>
+
+        <!-- CQ1 -->
+        <div class="question-card" id="cq1">
+            <div class="q-header">
+                <span class="q-number">Question 1</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">What is 15% of 240?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca1" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('cq1','ca1','36')">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq1"></div>
+        </div>
+
+        <!-- CQ2 -->
+        <div class="question-card" id="cq2">
+            <div class="q-header">
+                <span class="q-number">Question 2</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Simplify the fraction: 48/64</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca2" placeholder="e.g. 3/4">
+                <button class="check-btn" onclick="checkAnswer('cq2','ca2','3/4',['¾'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq2"></div>
+        </div>
+
+        <!-- CQ3 -->
+        <div class="question-card" id="cq3">
+            <div class="q-header">
+                <span class="q-number">Question 3</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Convert 0.375 to a fraction in simplest form.</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca3" placeholder="e.g. 3/8">
+                <button class="check-btn" onclick="checkAnswer('cq3','ca3','3/8',['⅜'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq3"></div>
+        </div>
+
+        <!-- CQ4 -->
+        <div class="question-card" id="cq4">
+            <div class="q-header">
+                <span class="q-number">Question 4</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">A rectangle has a length of 12 cm and width of 8 cm. What is its area?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca4" placeholder="e.g. 96">
+                <button class="check-btn" onclick="checkAnswer('cq4','ca4','96',['96 cm^2','96cm2','96 cm²'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq4"></div>
+        </div>
+
+        <!-- CQ5 -->
+        <div class="question-card" id="cq5">
+            <div class="q-header">
+                <span class="q-number">Question 5</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">What is the next number in the pattern? 2, 6, 18, 54, ___</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca5" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('cq5','ca5','162')">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq5"></div>
+        </div>
+
+        <!-- CQ6 -->
+        <div class="question-card" id="cq6">
+            <div class="q-header">
+                <span class="q-number">Question 6</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">A shop sells a jacket for $120. During a sale, the price is reduced by 25%. What is the sale price?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca6" placeholder="e.g. $90">
+                <button class="check-btn" onclick="checkAnswer('cq6','ca6','90',['$90','90.00','$90.00'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq6"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('wc6')">📝 Show working space</button>
+                <div class="working-box" id="wc6"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- CQ7 -->
+        <div class="question-card" id="cq7">
+            <div class="q-header">
+                <span class="q-number">Question 7</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">The mean of five numbers is 18. Four of the numbers are 15, 20, 12, and 23. What is the fifth number?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca7" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('cq7','ca7','20')">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq7"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('wc7')">📝 Show working space</button>
+                <div class="working-box" id="wc7"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <!-- CQ8 -->
+        <div class="question-card" id="cq8">
+            <div class="q-header">
+                <span class="q-number">Question 8</span>
+                <span class="q-topic">Numeracy – Integers</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">A submarine is at −120 metres. It rises 45 metres. What is its new depth?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca8" placeholder="e.g. -75">
+                <button class="check-btn" onclick="checkAnswer('cq8','ca8','-75',['−75','-75m','-75 metres'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq8"></div>
+        </div>
+
+        <!-- CQ9 -->
+        <div class="question-card" id="cq9">
+            <div class="q-header">
+                <span class="q-number">Question 9</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">1 mark</span>
+            </div>
+            <div class="q-text">Round 3.4567 to two decimal places.</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca9" placeholder="Your answer">
+                <button class="check-btn" onclick="checkAnswer('cq9','ca9','3.46')">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq9"></div>
+        </div>
+
+        <!-- CQ10 -->
+        <div class="question-card" id="cq10">
+            <div class="q-header">
+                <span class="q-number">Question 10</span>
+                <span class="q-topic">Numeracy</span>
+                <span class="q-marks">2 marks</span>
+            </div>
+            <div class="q-text">A train travels at 90 km/h. How far does it travel in 2 hours and 30 minutes?</div>
+            <div class="answer-row">
+                <input type="text" class="answer-input" id="ca10" placeholder="e.g. 225">
+                <button class="check-btn" onclick="checkAnswer('cq10','ca10','225',['225 km','225km'])">Check</button>
+            </div>
+            <div class="feedback" id="fb-cq10"></div>
+            <div class="working-area">
+                <button class="working-toggle" onclick="toggleWorking('wc10')">📝 Show working space</button>
+                <div class="working-box" id="wc10"><textarea placeholder="Show your working here..."></textarea></div>
+            </div>
+        </div>
+
+        <button class="submit-all" onclick="submitAll('common')">✅ Submit Common Examination</button>
+        <div class="score-summary" id="scoreCommon">
+            <div class="score-label">Common Examination Score</div>
+            <div class="score-big" id="scoreCommonVal">0/13</div>
+            <div class="score-bar"><div class="score-fill" id="scoreCommonBar" style="width:0%"></div></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ===== TIMER =====
+    let timerInterval = null;
+    let timeLeft = 35 * 60; // default main exam
+    let timerRunning = false;
+    const timerDurations = { main: 35 * 60, common: 20 * 60 };
+    let currentSection = 'main';
+
+    function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    }
+
+    function updateTimerDisplay() {
+        const el = document.getElementById('timerDisplay');
+        el.textContent = formatTime(timeLeft);
+        el.className = 'timer-display';
+        if (timeLeft <= 60) el.classList.add('danger');
+        else if (timeLeft <= 300) el.classList.add('warning');
+    }
+
+    function startTimer() {
+        if (timerRunning) return;
+        timerRunning = true;
+        document.getElementById('btnStart').style.display = 'none';
+        document.getElementById('btnPause').style.display = 'inline-block';
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                alert('⏰ Time is up! Please submit your answers.');
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('btnStart').style.display = 'inline-block';
+        document.getElementById('btnPause').style.display = 'none';
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        timeLeft = timerDurations[currentSection];
+        updateTimerDisplay();
+    }
+
+    // ===== SECTION SWITCHING =====
+    function switchSection(section) {
+        currentSection = section;
+        document.querySelectorAll('.exam-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.getElementById('section' + section.charAt(0).toUpperCase() + section.slice(1)).classList.add('active');
+        document.getElementById('tab' + section.charAt(0).toUpperCase() + section.slice(1)).classList.add('active');
+        document.getElementById('timerLabel').textContent =
+            section === 'main' ? 'Main Examination' : 'Common Examination';
+        pauseTimer();
+        timeLeft = timerDurations[section];
+        updateTimerDisplay();
+    }
+
+    // ===== ANSWER CHECKING =====
+    function normalise(str) {
+        return str.toString().trim().toLowerCase()
+            .replace(/\s+/g, ' ')
+            .replace(/×/g, 'x')
+            .replace(/−/g, '-')
+            .replace(/\$/g, '')
+            .replace(/°c/gi, '');
+    }
+
+    function checkAnswer(qId, inputId, correct, alts) {
+        const input = document.getElementById(inputId);
+        const fb = document.getElementById('fb-' + qId);
+        const card = document.getElementById(qId);
+        const userAns = normalise(input.value);
+        const correctNorm = normalise(correct);
+
+        let isCorrect = userAns === correctNorm;
+        if (!isCorrect && alts) {
+            isCorrect = alts.some(a => normalise(a) === userAns);
+        }
+
+        input.className = 'answer-input ' + (isCorrect ? 'correct-input' : 'incorrect-input');
+        card.className = 'question-card ' + (isCorrect ? 'correct' : 'incorrect');
+        fb.className = 'feedback show ' + (isCorrect ? 'correct-fb' : 'incorrect-fb');
+        fb.textContent = isCorrect
+            ? '✅ Correct! Well done!'
+            : `❌ Not quite. The correct answer is: ${correct}`;
+    }
+
+    // ===== WORKING TOGGLE =====
+    function toggleWorking(id) {
+        const box = document.getElementById(id);
+        box.classList.toggle('show');
+    }
+
+    // ===== SUBMIT ALL =====
+    function submitAll(section) {
+        const prefix = section === 'main' ? 'q' : 'cq';
+        const inputPrefix = section === 'main' ? 'a' : 'ca';
+        const count = section === 'main' ? 25 : 10;
+        const totalMarks = section === 'main' ? 25 : 13;
+
+        // Auto-check all unanswered
+        for (let i = 1; i <= count; i++) {
+            const card = document.getElementById(prefix + i);
+            if (!card.classList.contains('correct') && !card.classList.contains('incorrect')) {
+                const btn = card.querySelector('.check-btn');
+                if (btn) btn.click();
+            }
+        }
+
+        // Count correct
+        let correct = 0;
+        const markMap = {};
+        document.querySelectorAll(`#section${section.charAt(0).toUpperCase() + section.slice(1)} .question-card`).forEach(card => {
+            const marksText = card.querySelector('.q-marks').textContent;
+            const marks = parseInt(marksText) || 1;
+            if (card.classList.contains('correct')) correct += marks;
+        });
+
+        const scoreEl = document.getElementById('score' + section.charAt(0).toUpperCase() + section.slice(1));
+        const valEl = document.getElementById('score' + section.charAt(0).toUpperCase() + section.slice(1) + 'Val');
+        const barEl = document.getElementById('score' + section.charAt(0).toUpperCase() + section.slice(1) + 'Bar');
+
+        valEl.textContent = `${correct}/${totalMarks}`;
+        barEl.style.width = `${(correct / totalMarks) * 100}%`;
+        barEl.style.background = correct / totalMarks >= 0.5 ? 'var(--success)' : 'var(--danger)';
+        scoreEl.classList.add('show');
+        scoreEl.scrollIntoView({ behavior: 'smooth' });
+        pauseTimer();
+    }
+
+    // Init
+    updateTimerDisplay();
+</script>
+
+</body>
+</html>
